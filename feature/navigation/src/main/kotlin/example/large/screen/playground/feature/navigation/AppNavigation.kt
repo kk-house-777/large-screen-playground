@@ -17,10 +17,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import example.large.screen.playground.core.route.AppRoute
 import example.large.screen.playground.feature.home.HomeScreen
 import example.large.screen.playground.feature.list.ListDetailScreen
@@ -116,9 +118,48 @@ private fun AppNavHost(
         composable(SETTING_ROUTE) {
             SettingScreen()
         }
+        composable(
+            route = "detail/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.StringType })
+        ) {
+            val id = it.arguments?.getString("id")!!
+            DetailRoute(id)
+        }
+        composable(
+            route = "main/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.StringType })
+        ) {
+            val id = it.arguments?.getString("id")!!
+            MainContentRoute(id)
+        }
+        composable(
+            route = "sub/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.StringType })
+        ) {
+            val id = it.arguments?.getString("id")!!
+            SubContentRoute(id)
+        }
     }
 }
 
+
+/**
+ * Temporary placeholder route functions - will be replaced in next task
+ */
+@Composable
+private fun DetailRoute(id: String) {
+    Text("Detail Route: $id")
+}
+
+@Composable
+private fun MainContentRoute(id: String) {
+    Text("Main Content Route: $id")
+}
+
+@Composable
+private fun SubContentRoute(id: String) {
+    Text("Sub Content Route: $id")
+}
 
 /**
  * Route string constants
