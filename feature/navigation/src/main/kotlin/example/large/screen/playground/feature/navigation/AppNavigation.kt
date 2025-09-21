@@ -98,16 +98,16 @@ private fun AppNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = "home",
+        startDestination = TopLevelRoute.Home.route,
         modifier = modifier
     ) {
-        composable("home") {
+        composable(TopLevelRoute.Home.route) {
             HomePlaceholderScreen()
         }
-        composable("list") {
+        composable(TopLevelRoute.List.route) {
             ListPlaceholderScreen()
         }
-        composable("setting") {
+        composable(TopLevelRoute.Setting.route) {
             SettingPlaceholderScreen()
         }
     }
