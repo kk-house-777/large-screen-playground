@@ -115,7 +115,7 @@ private fun AppNavHost(
             HomeScreen()
         }
         composable<AppRoute.List> {
-            ListScreen()
+            ListScreen(navController)
         }
         composable<AppRoute.Setting> {
             SettingScreen()
