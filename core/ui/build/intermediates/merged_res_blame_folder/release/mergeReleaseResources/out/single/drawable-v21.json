@@ -1,0 +1,6 @@
+[
+    {
+        "merged": "example.large.screen.playground.core.ui-release-50:/drawable-v21/notification_action_background.xml",
+        "source": "example.large.screen.playground.core.ui-core-1.17.0-3:/drawable-v21/notification_action_background.xml"
+    }
+]

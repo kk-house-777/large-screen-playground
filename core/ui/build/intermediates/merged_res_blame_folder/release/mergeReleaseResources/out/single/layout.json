@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "example.large.screen.playground.core.ui-release-50:/layout/notification_template_part_time.xml",
+        "source": "example.large.screen.playground.core.ui-core-1.17.0-3:/layout/notification_template_part_time.xml"
+    },
+    {
+        "merged": "example.large.screen.playground.core.ui-release-50:/layout/notification_template_part_chronometer.xml",
+        "source": "example.large.screen.playground.core.ui-core-1.17.0-3:/layout/notification_template_part_chronometer.xml"
+    },
+    {
+        "merged": "example.large.screen.playground.core.ui-release-50:/layout/ime_base_split_test_activity.xml",
+        "source": "example.large.screen.playground.core.ui-core-1.17.0-3:/layout/ime_base_split_test_activity.xml"
+    },
+    {
+        "merged": "example.large.screen.playground.core.ui-release-50:/layout/custom_dialog.xml",
+        "source": "example.large.screen.playground.core.ui-core-1.17.0-3:/layout/custom_dialog.xml"
+    },
+    {
+        "merged": "example.large.screen.playground.core.ui-release-50:/layout/ime_secondary_split_test_activity.xml",
+        "source": "example.large.screen.playground.core.ui-core-1.17.0-3:/layout/ime_secondary_split_test_activity.xml"
+    }
+]
