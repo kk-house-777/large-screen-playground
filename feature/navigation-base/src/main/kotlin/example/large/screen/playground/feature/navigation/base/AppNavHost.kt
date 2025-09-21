@@ -14,6 +14,7 @@ import example.large.screen.playground.feature.home.HomeScreen
 import example.large.screen.playground.feature.list.ListDetailScreen
 import example.large.screen.playground.feature.list.ListScreen
 import example.large.screen.playground.feature.maincontent.MainContentScreen
+import example.large.screen.playground.feature.maincontent.MainSubContentScreen
 import example.large.screen.playground.feature.setting.SettingScreen
 import example.large.screen.playground.feature.subcontent.SubContentScreen
 
@@ -51,7 +52,11 @@ fun AppNavHost(
         }
         composable<AppRoute.MainContent> {
             val mainContent = it.toRoute<AppRoute.MainContent>()
-            MainContentScreen(mainContent.id, navController)
+            if (adaptiveConfig.useAdaptiveLayouts.value) {
+                MainSubContentScreen(mainContent.id, navController)
+            } else {
+                MainContentScreen(mainContent.id, navController)
+            }
         }
         composable<AppRoute.SubContent> {
             val subContent = it.toRoute<AppRoute.SubContent>()
