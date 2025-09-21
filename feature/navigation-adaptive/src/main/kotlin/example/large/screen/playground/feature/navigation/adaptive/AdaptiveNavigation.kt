@@ -7,7 +7,6 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.runtime.Composable
@@ -39,9 +38,8 @@ fun AdaptiveNavigation(
         TopLevelRoute(AppRoute.Setting, "Setting", Icons.Filled.Settings)
     )
 
-    Scaffold(
-        contentWindowInsets = ScaffoldDefaults.contentWindowInsets
-    ) { innerPadding ->
+
+    Scaffold { innerPadding ->
         NavigationSuiteScaffold(
             navigationSuiteItems = {
                 topLevelRoutes.forEach { topRoute ->
