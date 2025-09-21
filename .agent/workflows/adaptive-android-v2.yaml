@@ -77,7 +77,7 @@ milestones:
 
       - id: "migrate-type-safe-navigation-compose"
         goal: "NavigationComposeを型安全に使う"
-        module_scope: ["app", "core:route"]
+        module_scope: ["app", "core:route", "feature:navigation"]
         actions:
           - "kotlin-serializationの依存をプロジェクトに導入"
           - "各画面を表現したrouteをシリアライザブルなデータクラスに置き換え。core:routeのみに配置"
