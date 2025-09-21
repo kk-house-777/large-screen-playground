@@ -16,55 +16,10 @@ principles:
   - "Respect depends_on strictly."
   - "Changes must stay within module_scope."
 
-# 既存の v1 マイルストーンは省略（そのまま流用）。以下は v2 での追加分。
 milestones:
-  - name: "nav-graph-second-third-level"
-    description: "Detail / MainContent / SubContent を NavGraph に登録し、一覧から辿れるようにする"
-
+  - name: "refactor-to-modules-and-deps"
+    description: "リファクタをしていく"
     tasks:
-      - id: "register-destinations-detail-main-sub"
-        goal: ":feature:navigation の NavGraph に detail/{id}, main/{id}, sub/{id} を追加する"
-        module_scope: [":feature:navigation", ":core:route"]
-        # v1 の navigation 基盤と list module がある前提
-        depends_on: ["navigation-feature", "listdetail-impl"]
-        actions:
-          - "NavGraph 定義（:feature:navigation）に以下の destination を追加:"
-          - "  - composable(route = \"detail/{id}\", arguments = [navArgument(\"id\") { type = NavType.StringType }]) {"
-          - "      val id = it.arguments?.getString(\"id\")!!"
-          - "      DetailRoute(id)"
-          - "    }"
-          - "  - composable(route = \"main/{id}\", arguments = [navArgument(\"id\") { type = NavType.StringType }]) {"
-          - "      val id = it.arguments?.getString(\"id\")!!"
-          - "      MainContentRoute(id)"
-          - "    }"
-          - "  - composable(route = \"sub/{id}\", arguments = [navArgument(\"id\") { type = NavType.StringType }]) {"
-          - "      val id = it.arguments?.getString(\"id\")!!"
-          - "      SubContentRoute(id)"
-          - "    }"
-          - ":core:route の AppRoute 拡張（routeName）と整合する route 文字列を使用すること。"
-          - "Run ./gradlew :feature:navigation:build"
-        verify:
-          - ":feature:navigation がビルド成功すること"
-        commit: "feat(nav): add destinations for detail/main/sub to NavGraph"
-        notes: "null 安全性のため requireNotNull などで id を検証しても良い"
-
-      - id: "entry-composables-in-feature-list"
-        goal: ":feature:list に DetailRoute / MainContentRoute / SubContentRoute のエントリ関数を追加する"
-        module_scope: [":feature:list"]
-        depends_on: ["register-destinations-detail-main-sub"]
-        actions:
-          - ":feature:list に以下の Composable エントリ関数を追加（既存 Screen を呼び出す）:"
-          - "  fun DetailRoute(id: String) { DetailScreen(id = id) }"
-          - "  fun MainContentRoute(id: String) { MainContentScreen(id = id) }"
-          - "  fun SubContentRoute(id: String) { SubContentScreen(parentId = id) }"
-          - "SubContentScreen.kt が無ければ新規作成（プレースホルダで可）。"
-          - "Run ./gradlew :feature:list:build"
-        verify:
-          - ":feature:list がビルド成功すること"
-          - "SubContentScreen が存在すること"
-        commit: "feat(list): add route entry composables for detail/main/sub"
-        notes: "Main/Detail のどちらで Sub を開くかは後続タスクで配線"
-
       - id: "Create module.Detail, MainContent, SubContent"
         goal: "DetailScreen, MainContentScreen, SubContentScreen を featureモジュールに分割する"
         module_scope: [":feature:list", ":feature:detail", ":feature:maincontent", ":feature:subcontent", "navigation", "core:ui", "core:route"]
@@ -82,4 +37,27 @@ milestones:
           - "kotlin-serializationの依存をプロジェクトに導入"
           - "各画面を表現したrouteをシリアライザブルなデータクラスに置き換え。core:routeのみに配置"
           - "既存のnavigation compose の画面遷移の仕組みを,type-safe な形に変更。NavHostの中身の宣言を変更する形になるはず"
+        verify: "appがassembleDebugに成功すること"
+  - name: "implement-navigation-flows"
+    description: "Detail / MainContent / SubContent への画面遷移を実装する"
+    tasks:
+      - id: "impl-navigation-flow-1"
+        goal: "DetailContentへのNavigationフローを実装"
+        module_scope: [ "core:route", "feature:navigation", "feature:list", "feature:detail" ]
+        actions:
+          - "ListScreenでlistをタップしたらDetailScreenへ遷移できるようにする"
+        verify: "appがassembleDebugに成功すること"
+      - id: "impl-navigation-flow-2"
+        goal: "MainScreenContentへのnavigationフローを実装する"
+        module_scope: ["core:route", "feature:navigation", "feature:list", "feature:detail", "feature:maincontent", "feature:subcontent"]
+        actions:
+          - "ホームからMainContentへの導線を作成して遷移できるようにする"
+          - "ListScreenでlistをタップしたらDetailScreenへ遷移できるようにする"
+          - "DetailScreenからMainContentへ遷移できるようにする"
+        verify: "appがassembleDebugに成功すること"
+      - id: "impl-navigation-flow-3"
+        goal: "SubContentへのnavigationフローを実装する"
+        module_scope: [ "core:route", "feature:navigation","feature:maincontent", "feature:subcontent" ]
+        actions:
+          - "MainContentからSubContentへの導線を作成して、遷移できるようにする"
         verify: "appがassembleDebugに成功すること"
