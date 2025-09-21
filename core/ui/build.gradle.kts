@@ -45,10 +45,10 @@ dependencies {
     implementation(libs.androidx.material3)
 
     // Adaptive dependencies
-    implementation("androidx.compose.material3.adaptive:adaptive:1.0.0")
-    implementation("androidx.compose.material3.adaptive:adaptive-layout:1.0.0")
-    implementation("androidx.compose.material3.adaptive:adaptive-navigation:1.0.0")
-    implementation("androidx.compose.material3:material3-adaptive-navigation-suite:1.3.1")
+    implementation(libs.androidx.material3.adaptive)
+    implementation(libs.androidx.material3.adaptive.layout)
+    implementation(libs.androidx.material3.adaptive.navigation)
+    implementation(libs.androidx.material3.adaptive.navigation.suite.android)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
