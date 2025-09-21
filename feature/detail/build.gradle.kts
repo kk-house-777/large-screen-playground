@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "example.large.screen.playground.feature.navigation"
+    namespace = "example.large.screen.playground.feature.detail"
     compileSdk = 36
 
     defaultConfig {
@@ -35,25 +35,12 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:route"))
-    implementation(project(":core:ui"))
-    implementation(project(":feature:home"))
-    implementation(project(":feature:list"))
-    implementation(project(":feature:setting"))
-    implementation(project(":feature:detail"))
-    implementation(project(":feature:maincontent"))
-    implementation(project(":feature:subcontent"))
-
     implementation(libs.androidx.core.ktx)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-
-    // Navigation dependencies
-    implementation(libs.androidx.navigation.compose)
-    implementation(libs.androidx.activity.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

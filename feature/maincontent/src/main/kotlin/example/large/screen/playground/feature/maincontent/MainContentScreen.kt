@@ -1,4 +1,4 @@
-package example.large.screen.playground.feature.list
+package example.large.screen.playground.feature.maincontent
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
