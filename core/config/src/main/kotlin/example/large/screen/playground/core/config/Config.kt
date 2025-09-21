@@ -7,7 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 
 data class AdaptiveConfig(
-    val useAdaptiveLayouts: MutableState<Boolean>
+    val useAdaptiveLayouts: MutableState<Boolean> = mutableStateOf(false)
 )
 
 val LocalAdaptiveConfig = compositionLocalOf<AdaptiveConfig> {
