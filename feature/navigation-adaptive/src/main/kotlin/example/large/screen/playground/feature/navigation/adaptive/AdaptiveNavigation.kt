@@ -6,6 +6,8 @@ import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.runtime.Composable
@@ -37,44 +39,49 @@ fun AdaptiveNavigation(
         TopLevelRoute(AppRoute.Setting, "Setting", Icons.Filled.Settings)
     )
 
-    NavigationSuiteScaffold(
-        navigationSuiteItems = {
-            topLevelRoutes.forEach { topRoute ->
-                val selected = currentDestination?.hierarchy?.any {
-                    it.route?.contains(topRoute.route::class.simpleName.orEmpty()) == true
-                } == true
+    Scaffold(
+        contentWindowInsets = ScaffoldDefaults.contentWindowInsets
+    ) { innerPadding ->
+        NavigationSuiteScaffold(
+            navigationSuiteItems = {
+                topLevelRoutes.forEach { topRoute ->
+                    val selected = currentDestination?.hierarchy?.any {
+                        it.route?.contains(topRoute.route::class.simpleName.orEmpty()) == true
+                    } == true
 
-                item(
-                    selected = selected,
-                    onClick = {
-                        navController.navigate(topRoute.route) {
-                            // Pop up to the start destination of the graph to
-                            // avoid building up a large stack of destinations
-                            popUpTo(navController.graph.startDestinationRoute!!) {
-                                saveState = true
+                    item(
+                        selected = selected,
+                        onClick = {
+                            navController.navigate(topRoute.route) {
+                                // Pop up to the start destination of the graph to
+                                // avoid building up a large stack of destinations
+                                popUpTo(navController.graph.startDestinationRoute!!) {
+                                    saveState = true
+                                }
+                                // Avoid multiple copies of the same destination when
+                                // reselecting the same item
+                                launchSingleTop = true
+                                // Restore state when reselecting a previously selected item
+                                restoreState = true
                             }
-                            // Avoid multiple copies of the same destination when
-                            // reselecting the same item
-                            launchSingleTop = true
-                            // Restore state when reselecting a previously selected item
-                            restoreState = true
-                        }
-                    },
-                    icon = {
-                        Icon(
-                            imageVector = topRoute.icon,
-                            contentDescription = topRoute.label
-                        )
-                    },
-                    label = { Text(topRoute.label) }
-                )
-            }
+                        },
+                        icon = {
+                            Icon(
+                                imageVector = topRoute.icon,
+                                contentDescription = topRoute.label
+                            )
+                        },
+                        label = { Text(topRoute.label) }
+                    )
+                }
+            },
+            modifier = Modifier.padding(innerPadding)
+        ) {
+            AppNavHost(
+                navController = navController,
+                modifier = Modifier
+            )
         }
-    ) {
-        AppNavHost(
-            navController = navController,
-            modifier = Modifier
-        )
     }
 }
 
