@@ -15,6 +15,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import example.large.screen.playground.core.config.AdaptiveConfig
 import example.large.screen.playground.feature.navigation.base.AppNavHost
 import example.large.screen.playground.feature.navigation.base.TopLevelRoute
 
@@ -26,6 +27,7 @@ import example.large.screen.playground.feature.navigation.base.TopLevelRoute
 @Composable
 fun AdaptiveNavigation(
     topLevelRoutes: List<TopLevelRoute>,
+    adaptiveConfig: AdaptiveConfig,
     navController: NavHostController = rememberNavController()
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -89,6 +91,7 @@ fun AdaptiveNavigation(
             modifier = Modifier.padding(innerPadding)
         ) {
             AppNavHost(
+                adaptiveConfig = adaptiveConfig,
                 navController = navController,
                 modifier = Modifier
             )

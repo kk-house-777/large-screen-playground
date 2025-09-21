@@ -7,9 +7,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import example.large.screen.playground.core.config.AdaptiveConfig
 import example.large.screen.playground.core.route.AppRoute
 import example.large.screen.playground.feature.detail.DetailScreen
 import example.large.screen.playground.feature.home.HomeScreen
+import example.large.screen.playground.feature.list.ListDetailScreen
 import example.large.screen.playground.feature.list.ListScreen
 import example.large.screen.playground.feature.maincontent.MainContentScreen
 import example.large.screen.playground.feature.setting.SettingScreen
@@ -22,7 +24,8 @@ import example.large.screen.playground.feature.subcontent.SubContentScreen
 @Composable
 fun AppNavHost(
     navController: NavHostController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    adaptiveConfig: AdaptiveConfig = AdaptiveConfig(),
 ) {
     NavHost(
         navController = navController,
@@ -33,7 +36,11 @@ fun AppNavHost(
             HomeScreen(navController)
         }
         composable<AppRoute.List> {
-            ListScreen(navController)
+            if (adaptiveConfig.useAdaptiveLayouts.value) {
+                ListDetailScreen(navController)
+            } else {
+                ListScreen(navController)
+            }
         }
         composable<AppRoute.Setting> {
             SettingScreen()

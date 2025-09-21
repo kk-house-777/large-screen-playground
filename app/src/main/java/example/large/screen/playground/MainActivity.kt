@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppRoot() {
     val adaptiveConfig = rememberAdaptiveConfig(
-        initialUseAdaptiveLayouts = false
+        initialUseAdaptiveLayouts = true
     )
     val topLevelRoutes = listOf(
         TopLevelRoute(AppRoute.Home, "Home", Icons.Filled.Home),
@@ -45,7 +45,7 @@ fun AppRoot() {
         ) {
             // Switch between adaptive and non-adaptive navigation based on config flag
             if (adaptiveConfig.useAdaptiveLayouts.value) {
-                AdaptiveNavigation(topLevelRoutes)
+                AdaptiveNavigation(topLevelRoutes, adaptiveConfig)
             } else {
                 NotAdaptiveNavigation(topLevelRoutes)
             }

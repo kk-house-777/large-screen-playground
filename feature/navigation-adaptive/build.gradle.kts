@@ -36,6 +36,7 @@ android {
 
 dependencies {
     implementation(project(":core:route"))
+    implementation(project(":core:config"))
     implementation(project(":feature:navigation-base"))
 
     implementation(libs.androidx.core.ktx)
