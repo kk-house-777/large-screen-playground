@@ -9,6 +9,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -35,7 +36,8 @@ fun AppNavigation(
     Scaffold(
         bottomBar = {
             AppBottomNavigationBar(navController = navController)
-        }
+        },
+        contentWindowInsets = ScaffoldDefaults.contentWindowInsets
     ) { paddingValues ->
         AppNavHost(
             navController = navController,
