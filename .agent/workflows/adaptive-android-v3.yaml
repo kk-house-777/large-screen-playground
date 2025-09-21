@@ -1,0 +1,20 @@
+workflow: "Adaptive layouts playground (Android v3)"
+principles:
+  - "One commit per task."
+  - "Respect depends_on strictly."
+  - "Changes must stay within module_scope."
+
+milestone:
+  - name: "設定画面事前準備"
+    description: "設定画面でグローバル変数の切り替え領域を作成する"
+    tasks:
+        - id: "global-variable"
+          goal: ":feature:settings を追加し、設定画面の土台を作成する"
+          module_scope: [":feature:settings", ":config"]
+          actions:
+          - "configモジュールを追加する"
+          - "すべてのモジュールからconfigモジュールに依存を追加する"
+          - "Configオブジェクトを作成し、アプリのフラグをダミーで定義する"
+          verify:
+          - "Module builds"
+          commit: "feat(settings): add settings feature module with placeholder screen"

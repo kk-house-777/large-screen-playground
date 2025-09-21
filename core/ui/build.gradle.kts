@@ -35,6 +35,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:config"))
     implementation(project(":core:route"))
 
     implementation(libs.androidx.core.ktx)

@@ -21,6 +21,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "large-screen-playground"
 include(":app")
+include(":core:config")
 include(":core:route")
 include(":core:ui")
 include(":feature:navigation")

@@ -40,6 +40,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:config"))
     implementation(project(":feature:navigation"))
 
     implementation(libs.androidx.core.ktx)
