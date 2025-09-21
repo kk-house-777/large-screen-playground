@@ -66,34 +66,41 @@ private fun AppBottomNavigationBar(
         TopLevelRoute(AppRoute.Setting, "Setting", Icons.Filled.Settings)
     )
 
-    NavigationBar {
-        topLevelRoutes.forEach { topRoute ->
-            val selected = currentDestination?.hierarchy?.any { it.route?.contains(topRoute.route::class.simpleName.orEmpty()) == true } == true
+    // Determine if the current route is a top-level route
+    val isTopLevelRoute = topLevelRoutes.any { topRoute ->
+        currentDestination?.hierarchy?.any { it.route?.contains(topRoute.route::class.simpleName.orEmpty()) == true } == true
+    }
 
-            NavigationBarItem(
-                selected = selected,
-                onClick = {
-                    navController.navigate(topRoute.route) {
-                        // Pop up to the start destination of the graph to
-                        // avoid building up a large stack of destinations
-                        popUpTo(navController.graph.startDestinationRoute!!) {
-                            saveState = true
+    if (isTopLevelRoute) { // Only show NavigationBar if it's a top-level route
+        NavigationBar {
+            topLevelRoutes.forEach { topRoute ->
+                val selected = currentDestination?.hierarchy?.any { it.route?.contains(topRoute.route::class.simpleName.orEmpty()) == true } == true
+
+                NavigationBarItem(
+                    selected = selected,
+                    onClick = {
+                        navController.navigate(topRoute.route) {
+                            // Pop up to the start destination of the graph to
+                            // avoid building up a large stack of destinations
+                            popUpTo(navController.graph.startDestinationRoute!!) {
+                                saveState = true
+                            }
+                            // Avoid multiple copies of the same destination when
+                            // reselecting the same item
+                            launchSingleTop = true
+                            // Restore state when reselecting a previously selected item
+                            restoreState = true
                         }
-                        // Avoid multiple copies of the same destination when
-                        // reselecting the same item
-                        launchSingleTop = true
-                        // Restore state when reselecting a previously selected item
-                        restoreState = true
-                    }
-                },
-                icon = {
-                    Icon(
-                        imageVector = topRoute.icon,
-                        contentDescription = topRoute.label
-                    )
-                },
-                label = { Text(topRoute.label) }
-            )
+                    },
+                    icon = {
+                        Icon(
+                            imageVector = topRoute.icon,
+                            contentDescription = topRoute.label
+                        )
+                    },
+                    label = { Text(topRoute.label) }
+                )
+            }
         }
     }
 }
@@ -112,21 +119,21 @@ private fun AppNavHost(
         modifier = modifier
     ) {
         composable<AppRoute.Home> {
-            HomeScreen()
+            HomeScreen(navController)
         }
         composable<AppRoute.List> {
-            ListScreen()
+            ListScreen(navController)
         }
         composable<AppRoute.Setting> {
             SettingScreen()
         }
         composable<AppRoute.Detail> {
             val detail = it.toRoute<AppRoute.Detail>()
-            DetailScreen(detail.id)
+            DetailScreen(detail.id, navController)
         }
         composable<AppRoute.MainContent> {
             val mainContent = it.toRoute<AppRoute.MainContent>()
-            MainContentScreen(mainContent.id)
+            MainContentScreen(mainContent.id, navController)
         }
         composable<AppRoute.SubContent> {
             val subContent = it.toRoute<AppRoute.SubContent>()
