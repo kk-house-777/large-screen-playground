@@ -22,3 +22,4 @@ dependencyResolutionManagement {
 rootProject.name = "large-screen-playground"
 include(":app")
 include(":core:route")
+include(":core:ui")
