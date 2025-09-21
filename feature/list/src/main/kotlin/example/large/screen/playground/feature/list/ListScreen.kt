@@ -46,7 +46,10 @@ fun ListScreen(navController: NavController) {
                 modifier = Modifier.padding(bottom = 16.dp)
             )
         }
-        items(items) { item ->
+        items(
+            items = items,
+            key = { it.id }
+        ) { item ->
             Card(
                 modifier = Modifier
                     .fillMaxWidth()

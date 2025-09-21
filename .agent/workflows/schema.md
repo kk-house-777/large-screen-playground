@@ -1,9 +1,8 @@
 # ファイル: .agent/workflows/adaptive-android-v1.yaml
-workflow: "Adaptive layouts playground (Android v1)"
+workflow: "<workflow name>"
 principles:
-- "Each task must compile (:app:assembleDebug)."
+- "Each task must compile."
 - "One commit per task."
-- "Keep adaptive usage behind :core:ui wrappers."
 
 milestones:
 - name: "<短い名前>"
