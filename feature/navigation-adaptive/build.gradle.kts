@@ -45,6 +45,11 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+    // Adaptive dependencies
+    implementation(libs.androidx.material3.adaptive)
+    implementation(libs.androidx.material3.adaptive.layout)
+    implementation(libs.androidx.material3.adaptive.navigation.suite.android)
+
     // Navigation dependencies
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.activity.compose)

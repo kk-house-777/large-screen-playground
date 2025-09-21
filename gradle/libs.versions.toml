@@ -8,9 +8,9 @@ espressoCore = "3.7.0"
 lifecycleRuntimeKtx = "2.9.4"
 activityCompose = "1.11.0"
 composeBom = "2025.09.00"
-material3Adaptive = "1.1.0"
+material3Adaptive = "1.2.0-beta02"
 navigationCompose = "2.9.4"
-kotlinSerialization = "1.7.3"
+kotlinSerialization = "1.9.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

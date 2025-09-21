@@ -14,24 +14,25 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import example.large.screen.playground.core.route.AppRoute
 import example.large.screen.playground.feature.navigation.base.AppNavHost
+import example.large.screen.playground.feature.navigation.base.TopLevelRoute
 
 /**
  * Non-adaptive navigation implementation using standard Scaffold and bottom navigation
  */
 @Composable
 fun NotAdaptiveNavigation(
+    topLevelRoutes: List<TopLevelRoute>,
     navController: NavHostController = rememberNavController()
 ) {
     Scaffold(
         bottomBar = {
-            AppBottomNavigationBar(navController = navController)
+            AppBottomNavigationBar(navController = navController, topLevelRoutes = topLevelRoutes)
         },
         contentWindowInsets = ScaffoldDefaults.contentWindowInsets
     ) { paddingValues ->
@@ -47,23 +48,17 @@ fun NotAdaptiveNavigation(
  */
 @Composable
 private fun AppBottomNavigationBar(
+    topLevelRoutes: List<TopLevelRoute>,
     navController: NavHostController
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    val topLevelRoutes = listOf(
-        TopLevelRoute(AppRoute.Home, "Home", Icons.Filled.Home),
-        TopLevelRoute(AppRoute.List, "List", Icons.AutoMirrored.Filled.List),
-        TopLevelRoute(AppRoute.Setting, "Setting", Icons.Filled.Settings)
-    )
-
-    // Determine if the current route is a top-level route
     val isTopLevelRoute = topLevelRoutes.any { topRoute ->
         currentDestination?.hierarchy?.any { it.route?.contains(topRoute.route::class.simpleName.orEmpty()) == true } == true
     }
 
-    if (isTopLevelRoute) { // Only show NavigationBar if it's a top-level route
+    if (isTopLevelRoute) {
         NavigationBar {
             topLevelRoutes.forEach { topRoute ->
                 val selected = currentDestination?.hierarchy?.any { it.route?.contains(topRoute.route::class.simpleName.orEmpty()) == true } == true
@@ -96,12 +91,3 @@ private fun AppBottomNavigationBar(
         }
     }
 }
-
-/**
- * Data class for top-level route UI information
- */
-private data class TopLevelRoute(
-    val route: AppRoute,
-    val label: String,
-    val icon: ImageVector
-)
