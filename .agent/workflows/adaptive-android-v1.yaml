@@ -1,0 +1,143 @@
+workflow: "Adaptive layouts playground (Android v1)"
+principles:
+  - "Each task must compile (:app:assembleDebug)."
+  - "One commit per task."
+  - "Keep adaptive usage behind :core:ui wrappers."
+
+milestones:
+  - name: "modules-and-deps"
+    description: "土台モジュールと依存の導入"
+    tasks:
+      - id: "route-module"
+        goal: ":core:route を追加し、depth 付き AppRoute を定義する"
+        module_scope: [":core:route"]
+        actions:
+          - "Add plain Kotlin module :core:route"
+          - "Define AppRoute { Home, List, Setting, Detail(id), MainContent(id), SubContent(id) } with depth (0/1/2)"
+          - "Wire :feature:navigation (後で) から参照する前提の package 名を決めておく"
+          - "Run ./gradlew :core:route:build"
+        verify:
+          - "Module builds"
+          - "No Android / Compose dependencies in :core:route"
+        commit: "feat(route): add core route model with depth"
+
+      - id: "ui-module"
+        goal: ":core:ui を追加し Adaptive 薄ラッパ3種を提供する"
+        module_scope: [":core:ui"]
+        depends_on: ["route-module"]
+        actions:
+          - "Add Android Library :core:ui"
+          - "Add deps: material3, adaptive, adaptive-layout, adaptive-navigation, material3-adaptive-navigation-suite-android"
+          - "Implement AppNavSuite / AppListDetail / AppSupporting (薄ラッパ)"
+          - "Run ./gradlew :core:ui:build"
+        verify:
+          - "Module builds"
+        commit: "feat(ui): add adaptive wrappers (AppNavSuite/AppListDetail/AppSupporting)"
+
+      - id: "navigation-feature"
+        goal: ":feature:navigation を追加し、NavHost と Top タブを準備する"
+        module_scope: [":feature:navigation"]
+        depends_on: ["route-module", "ui-module"]
+        actions:
+          - "Add Android Library :feature:navigation"
+          - "Add deps: navigation-compose, activity-compose, material3"
+          - "Implement NavHost(start=Home) and Top tabs via AppNavSuite"
+          - "Wire routes: Home/List/Setting placeholder destinations"
+          - "Run ./gradlew :feature:navigation:build"
+        verify:
+          - "Module builds"
+        commit: "feat(navigation): add NavHost and top tabs via AppNavSuite"
+
+  - name: "entry-and-top"
+    description: "アプリ起動と Top 遷移の導線"
+    tasks:
+      - id: "app-entry"
+        goal: ":app に MainActivity/AppRoot を作成し :feature:navigation を組み込む"
+        module_scope: [":app", ":feature:navigation"]
+        depends_on: ["navigation-feature"]
+        actions:
+          - "Create MainActivity and setContent { AppRoot() }"
+          - "Add dependency :app -> :feature:navigation"
+          - "Run ./gradlew :app:assembleDebug"
+        verify:
+          - "App launches without crash"
+        commit: "feat(app): compose entry with navigation feature"
+
+      - id: "home-setting-mods"
+        goal: ":feature:home / :feature:setting を追加しプレースホルダ画面を導入"
+        module_scope: [":feature:home", ":feature:setting", ":feature:navigation"]
+        depends_on: ["app-entry"]
+        actions:
+          - "Add Android Library :feature:home with simple composable"
+          - "Add Android Library :feature:setting with simple composable"
+          - "Wire both to NavHost destinations"
+          - "Run ./gradlew :app:assembleDebug"
+        verify:
+          - "Navigate to Home/Setting tabs from Top"
+        commit: "feat(home,setting): add basic screens and wire to nav"
+
+  - name: "list-second-level"
+    description: "List → Detail/Main の 2 階層（ListDetail）"
+    tasks:
+      - id: "list-module"
+        goal: ":feature:list を追加（雛形）"
+        module_scope: [":feature:list"]
+        depends_on: ["app-entry"]
+        actions:
+          - "Add Android Library :feature:list"
+          - "Create skeleton composables for List/Detail/MainContent"
+          - "Run ./gradlew :feature:list:build"
+        verify:
+          - "Module builds"
+        commit: "feat(list): add module and skeleton screens"
+
+      - id: "listdetail-impl"
+        goal: "AppListDetail を使い List → Detail/Main を実装"
+        module_scope: [":feature:list", ":core:ui"]
+        depends_on: ["list-module", "ui-module"]
+        actions:
+          - "Use rememberListDetailPaneScaffoldNavigator<Item>()"
+          - "Wire list item click -> detail/main"
+          - "Run ./gradlew :app:assembleDebug"
+        verify:
+          - "Single-pane on phone, two-pane on tablet; back works"
+        commit: "feat(list): implement list+detail via AppListDetail"
+
+  - name: "subcontent-third-level"
+    description: "MainContent → SubContent の 3 階層（Supporting）"
+    tasks:
+      - id: "supporting-impl"
+        goal: "AppSupporting を MainContent 内から呼び出し SubContent を展開"
+        module_scope: [":feature:list", ":core:ui"]
+        depends_on: ["listdetail-impl"]
+        actions:
+          - "Use rememberSupportingPaneScaffoldNavigator<Unit>()"
+          - "Add button to open supporting, and allow back to close"
+          - "Run ./gradlew :app:assembleDebug"
+        verify:
+          - "Behavior works in both small and large windows"
+        commit: "feat(list): add subcontent via AppSupporting"
+
+  - name: "polish"
+    description: "最小の見栄え・CI"
+    tasks:
+      - id: "theme-insets"
+        goal: "テーマ/Insets の最小適用"
+        module_scope: [":app", ":core:ui"]
+        depends_on: ["supporting-impl"]
+        actions:
+          - "Apply MaterialTheme and minimal windowInsetsPadding where needed"
+          - "Run ./gradlew :app:assembleDebug"
+        verify:
+          - "No visual overlap with system bars on common cases"
+        commit: "chore(ui): minimal theme & insets"
+
+      - id: "ci-setup"
+        goal: "最小 CI（assembleDebug）追加"
+        module_scope: [".github/workflows"]
+        depends_on: ["theme-insets"]
+        actions:
+          - "Add GitHub Actions workflow to run ./gradlew :app:assembleDebug on PR"
+        verify:
+          - "Workflow runs successfully on next PR"
+        commit: "chore(ci): add android build workflow"
