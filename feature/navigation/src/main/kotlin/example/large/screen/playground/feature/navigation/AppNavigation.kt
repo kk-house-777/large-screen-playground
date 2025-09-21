@@ -20,6 +20,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import example.large.screen.playground.core.route.AppRoute
 
 /**
  * Top-level navigation composable with bottom navigation
@@ -51,19 +52,19 @@ private fun AppBottomNavigationBar(
     val currentDestination = navBackStackEntry?.destination
 
     val topLevelRoutes = listOf(
-        TopLevelRoute.Home,
-        TopLevelRoute.List,
-        TopLevelRoute.Setting
+        TopLevelRoute(AppRoute.Home, "Home", Icons.Filled.Home),
+        TopLevelRoute(AppRoute.List, "List", Icons.Filled.List),
+        TopLevelRoute(AppRoute.Setting, "Setting", Icons.Filled.Settings)
     )
 
     NavigationBar {
-        topLevelRoutes.forEach { route ->
-            val selected = currentDestination?.hierarchy?.any { it.route == route.route } == true
+        topLevelRoutes.forEach { topRoute ->
+            val selected = currentDestination?.hierarchy?.any { it.route == topRoute.routeName } == true
 
             NavigationBarItem(
                 selected = selected,
                 onClick = {
-                    navController.navigate(route.route) {
+                    navController.navigate(topRoute.routeName) {
                         // Pop up to the start destination of the graph to
                         // avoid building up a large stack of destinations
                         popUpTo(navController.graph.startDestinationRoute.orEmpty()) {
@@ -78,11 +79,11 @@ private fun AppBottomNavigationBar(
                 },
                 icon = {
                     Icon(
-                        imageVector = route.icon,
-                        contentDescription = route.label
+                        imageVector = topRoute.icon,
+                        contentDescription = topRoute.label
                     )
                 },
-                label = { Text(route.label) }
+                label = { Text(topRoute.label) }
             )
         }
     }
@@ -98,16 +99,16 @@ private fun AppNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = TopLevelRoute.Home.route,
+        startDestination = HOME_ROUTE,
         modifier = modifier
     ) {
-        composable(TopLevelRoute.Home.route) {
+        composable(HOME_ROUTE) {
             HomePlaceholderScreen()
         }
-        composable(TopLevelRoute.List.route) {
+        composable(LIST_ROUTE) {
             ListPlaceholderScreen()
         }
-        composable(TopLevelRoute.Setting.route) {
+        composable(SETTING_ROUTE) {
             SettingPlaceholderScreen()
         }
     }
@@ -138,28 +139,33 @@ private fun SettingPlaceholderScreen() {
 }
 
 /**
- * Data class for top-level routes
+ * Route string constants
+ */
+private const val HOME_ROUTE = "home"
+private const val LIST_ROUTE = "list"
+private const val SETTING_ROUTE = "setting"
+
+/**
+ * Extension property to get route name for navigation
+ */
+private val AppRoute.routeName: String
+    get() = when (this) {
+        is AppRoute.Home -> HOME_ROUTE
+        is AppRoute.List -> LIST_ROUTE
+        is AppRoute.Setting -> SETTING_ROUTE
+        is AppRoute.Detail -> "detail/${id}"
+        is AppRoute.MainContent -> "main/${id}"
+        is AppRoute.SubContent -> "sub/${id}"
+    }
+
+/**
+ * Data class for top-level route UI information
  */
 private data class TopLevelRoute(
-    val route: String,
+    val route: AppRoute,
     val label: String,
     val icon: ImageVector
 ) {
-    companion object {
-        val Home = TopLevelRoute(
-            route = "home",
-            label = "Home",
-            icon = Icons.Filled.Home
-        )
-        val List = TopLevelRoute(
-            route = "list",
-            label = "List",
-            icon = Icons.Filled.List
-        )
-        val Setting = TopLevelRoute(
-            route = "setting",
-            label = "Setting",
-            icon = Icons.Filled.Settings
-        )
-    }
+    val routeName: String
+        get() = route.routeName
 }
