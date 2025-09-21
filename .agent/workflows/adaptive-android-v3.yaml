@@ -42,4 +42,6 @@ milestone:
           actions:
             - "NavigationSuiteScaffoldを利用したサンプルを navigation-adaptiveモジュールに作成。NavHostはAppNavHostを使用"
             - "appモジュールにて、configのフラグを参照し、adaptive版とnot-adaptive版の切り替えを実装"
-          example: 
+          example: `.agent/examples/navigationSuiteScaffoldSample.md`
+          verify:
+              - "Module builds"
