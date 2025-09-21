@@ -1,6 +1,9 @@
 package example.large.screen.playground.feature.list
 
 import androidx.compose.runtime.Composable
+import example.large.screen.playground.feature.detail.DetailScreen
+import example.large.screen.playground.feature.maincontent.MainContentScreen
+import example.large.screen.playground.feature.subcontent.SubContentScreen
 
 /**
  * Entry point composables for navigation destinations.

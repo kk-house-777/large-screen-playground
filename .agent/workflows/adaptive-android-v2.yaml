@@ -65,6 +65,17 @@ milestones:
         commit: "feat(list): add route entry composables for detail/main/sub"
         notes: "Main/Detail のどちらで Sub を開くかは後続タスクで配線"
 
+      - id: "Create module.Detail, MainContent, SubContent"
+        goal: "DetailScreen, MainContentScreen, SubContentScreen を featureモジュールに分割する"
+        module_scope: [":feature:list", ":feature:detail", ":feature:maincontent", ":feature:subcontent", "navigation", "core:ui", "core:route"]
+        actions:
+          - "DetailScreen, MainContentScreen, SubContentScreen をそれぞれ feature モジュールに移動する"
+          - "必要に応じて core:ui のコンポーネントを利用するように修正する"
+          - "各モジュールの build.gradle.kts に必要な依存関係を追加する"
+          - "Run ./gradlew :feature:list:build :feature:detail:build :feature:maincontent:build :feature:subcontent:build"
+        verify: "それぞれのモジュールでassembleDebugが成功すること"
+
+
       - id: "wire-navigation-from-list"
         goal: "List → Detail/Main と MainContent → SubContent の遷移を配線する"
         module_scope: [":feature:list", ":feature:navigation"]
@@ -82,30 +93,3 @@ milestones:
         commit: "feat(list): wire navigation to detail/main/sub routes from list and main"
         notes: "NavController の取得は LocalContext/LocalNavController 等プロジェクト慣習に合わせる"
 
-      - id: "back-navigation-actions"
-        goal: "Detail / SubContent に戻る操作（navigateUp）を追加する"
-        module_scope: [":feature:list"]
-        depends_on: ["wire-navigation-from-list"]
-        actions:
-          - "DetailScreen と SubContentScreen に TopAppBar の戻るアイコンなどを設置し、navController.navigateUp() を呼ぶ"
-          - "戻り先が List / MainContent になることを確認"
-          - "Run ./gradlew :app:assembleDebug"
-        verify:
-          - "Detail → 戻る → List に戻る"
-          - "SubContent → 戻る → MainContent に戻る"
-          - "ビルド成功（:app:assembleDebug）"
-        commit: "chore(list): add navigateUp actions on detail and sub screens"
-
-      - id: "deeplinks-and-args-validation"
-        goal: "（任意）deep link と引数バリデーションを追加する"
-        module_scope: [":feature:navigation", ":feature:list"]
-        depends_on: ["back-navigation-actions"]
-        actions:
-          - "各 destination に navDeepLink を追加（例: myapp://detail/{id}, myapp://main/{id}, myapp://sub/{id}）"
-          - "id 取得部で require(id.isNotBlank()) などの簡易バリデーションを追加"
-          - "Run ./gradlew :app:assembleDebug"
-        verify:
-          - "deeplink で対象画面が開く（ログ等で確認）"
-          - "ビルド成功（:app:assembleDebug）"
-        commit: "chore(nav): add deeplinks and basic arg validation for detail/main/sub"
-        notes: "deeplink のスキーム/ホストはプロジェクトの package 名等に合わせて設定"
