@@ -30,7 +30,7 @@
     3. YAML の `actions` を順に実施
     4. `./gradlew :app:assembleDebug` が成功するまで修正
     5. `git commit -m "<commit message from task>"`
-    6. `open PR`（PR テンプレ参照）
+    6. PR作成。`open PR`（PR テンプレ参照）
 
 ## CI Gate
 - PR では必ず `./gradlew :app:assembleDebug` を実行
