@@ -6,13 +6,16 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
+// Re-export NavigationSuiteScope for external modules
+typealias AppNavigationSuiteScope = NavigationSuiteScope
+
 /**
  * Thin wrapper around Material3 NavigationSuiteScaffold for adaptive navigation.
  * Automatically switches between navigation bar (compact) and rail (expanded) layouts.
  */
 @Composable
 fun AppNavSuite(
-    navigationSuiteItems: NavigationSuiteScope.() -> Unit,
+    navigationSuiteItems: AppNavigationSuiteScope.() -> Unit,
     modifier: Modifier = Modifier,
     layoutType: NavigationSuiteType = NavigationSuiteType.NavigationBar,
     content: @Composable () -> Unit
