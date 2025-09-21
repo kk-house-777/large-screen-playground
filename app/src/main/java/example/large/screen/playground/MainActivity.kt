@@ -9,6 +9,8 @@ import androidx.compose.runtime.CompositionLocalProvider
 import example.large.screen.playground.core.config.LocalAdaptiveConfig
 import example.large.screen.playground.core.config.rememberAdaptiveConfig
 import example.large.screen.playground.feature.navigation.AppNavigation
+import example.large.screen.playground.feature.navigation.adaptive.AdaptiveNavigation
+import example.large.screen.playground.feature.navigation.notadaptive.NotAdaptiveNavigation
 import example.large.screen.playground.ui.theme.LargescreenplaygroundTheme
 
 class MainActivity : ComponentActivity() {
@@ -31,7 +33,12 @@ fun AppRoot() {
         CompositionLocalProvider(
             LocalAdaptiveConfig provides adaptiveConfig
         ) {
-            AppNavigation()
+            // Switch between adaptive and non-adaptive navigation based on config flag
+            if (adaptiveConfig.useAdaptiveLayouts.value) {
+                AdaptiveNavigation()
+            } else {
+                NotAdaptiveNavigation()
+            }
         }
     }
 }

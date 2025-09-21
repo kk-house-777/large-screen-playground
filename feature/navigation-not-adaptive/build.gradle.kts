@@ -1,20 +1,15 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 }
 
 android {
-    namespace = "example.large.screen.playground"
+    namespace = "example.large.screen.playground.feature.navigation.notadaptive"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "example.large.screen.playground"
         minSdk = 24
-        targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -40,19 +35,20 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:config"))
-    implementation(project(":feature:navigation"))
-    implementation(project(":feature:navigation-adaptive"))
-    implementation(project(":feature:navigation-not-adaptive"))
+    implementation(project(":core:route"))
+    implementation(project(":feature:navigation-base"))
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    // Navigation dependencies
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.activity.compose)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

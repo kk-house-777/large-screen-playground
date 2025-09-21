@@ -1,8 +1,11 @@
 # ファイル: .agent/workflows/adaptive-android-v1.yaml
 workflow: "<workflow name>"
 principles:
-- "Each task must compile."
 - "One commit per task."
+- "Respect depends_on strictly."
+- "Changes must stay within module_scope."
+- "Verify each task with the provided verify steps."
+- "Create PR with the provided commit message."
 
 milestones:
 - name: "<短い名前>"
