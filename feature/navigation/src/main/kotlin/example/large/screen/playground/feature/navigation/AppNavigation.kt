@@ -25,9 +25,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import example.large.screen.playground.core.route.AppRoute
 import example.large.screen.playground.feature.home.HomeScreen
-import example.large.screen.playground.feature.list.DetailRoute
-import example.large.screen.playground.feature.list.ListDetailScreen
-import example.large.screen.playground.feature.list.MainContentRoute
+import example.large.screen.playground.feature.list.DetailRouteWithNav
+import example.large.screen.playground.feature.list.ListScreenWithNavigation
+import example.large.screen.playground.feature.list.MainContentRouteWithNav
 import example.large.screen.playground.feature.list.SubContentRoute
 import example.large.screen.playground.feature.setting.SettingScreen
 
@@ -116,7 +116,7 @@ private fun AppNavHost(
             HomeScreen()
         }
         composable(LIST_ROUTE) {
-            ListDetailScreen()
+            ListScreenWithNavigation(navController)
         }
         composable(SETTING_ROUTE) {
             SettingScreen()
@@ -126,14 +126,14 @@ private fun AppNavHost(
             arguments = listOf(navArgument("id") { type = NavType.StringType })
         ) {
             val id = it.arguments?.getString("id")!!
-            DetailRoute(id)
+            DetailRouteWithNav(id, navController)
         }
         composable(
             route = "main/{id}",
             arguments = listOf(navArgument("id") { type = NavType.StringType })
         ) {
             val id = it.arguments?.getString("id")!!
-            MainContentRoute(id)
+            MainContentRouteWithNav(id, navController)
         }
         composable(
             route = "sub/{id}",

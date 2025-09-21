@@ -1,0 +1,88 @@
+package example.large.screen.playground.feature.list
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import example.large.screen.playground.core.route.AppRoute
+
+/**
+ * Detail screen with navigation capability to MainContent
+ */
+@Composable
+fun DetailScreenWithNav(itemId: String, navController: NavController) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = "Detail Screen",
+            style = MaterialTheme.typography.headlineMedium
+        )
+        Text(
+            text = "Selected Item: $itemId",
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.padding(top = 8.dp)
+        )
+        Text(
+            text = "This is the detail view for the selected item",
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.padding(top = 8.dp, bottom = 16.dp)
+        )
+        Button(
+            onClick = {
+                navController.navigate(AppRoute.MainContent(itemId).routeName)
+            }
+        ) {
+            Text("Open Main Content")
+        }
+    }
+}
+
+/**
+ * MainContent screen with navigation capability to SubContent
+ */
+@Composable
+fun MainContentScreenWithNav(itemId: String, navController: NavController) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = "Main Content",
+            style = MaterialTheme.typography.headlineMedium
+        )
+        Text(
+            text = "Content ID: $itemId",
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.padding(top = 8.dp)
+        )
+        Text(
+            text = "This is the main content view with detailed information",
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.padding(top = 8.dp, bottom = 16.dp)
+        )
+        Button(
+            onClick = {
+                // Navigate to SubContent
+                navController.navigate(AppRoute.SubContent(itemId).routeName)
+            }
+        ) {
+            Text("Open Sub Content")
+        }
+    }
+}
