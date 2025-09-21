@@ -40,4 +40,4 @@
 - **Clean Dependencies**: Each feature module only depends on necessary components
 
 ## Tags
-- `not-adaptive-sample`: Simple navigation implementation without adaptive components
+- `pre-adaptive-baseline`: Simple navigation implementation without adaptive components
