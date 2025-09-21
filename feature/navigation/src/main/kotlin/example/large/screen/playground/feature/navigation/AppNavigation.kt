@@ -17,12 +17,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 import example.large.screen.playground.core.route.AppRoute
 import example.large.screen.playground.feature.detail.DetailScreen
 import example.large.screen.playground.feature.home.HomeScreen
@@ -69,15 +68,15 @@ private fun AppBottomNavigationBar(
 
     NavigationBar {
         topLevelRoutes.forEach { topRoute ->
-            val selected = currentDestination?.hierarchy?.any { it.route == topRoute.routeName } == true
+            val selected = currentDestination?.hierarchy?.any { it.route?.contains(topRoute.route::class.simpleName.orEmpty()) == true } == true
 
             NavigationBarItem(
                 selected = selected,
                 onClick = {
-                    navController.navigate(topRoute.routeName) {
+                    navController.navigate(topRoute.route) {
                         // Pop up to the start destination of the graph to
                         // avoid building up a large stack of destinations
-                        popUpTo(navController.graph.startDestinationRoute.orEmpty()) {
+                        popUpTo(navController.graph.startDestinationRoute!!) {
                             saveState = true
                         }
                         // Avoid multiple copies of the same destination when
@@ -109,62 +108,33 @@ private fun AppNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = HOME_ROUTE,
+        startDestination = AppRoute.Home,
         modifier = modifier
     ) {
-        composable(HOME_ROUTE) {
+        composable<AppRoute.Home> {
             HomeScreen()
         }
-        composable(LIST_ROUTE) {
+        composable<AppRoute.List> {
             ListScreen()
         }
-        composable(SETTING_ROUTE) {
+        composable<AppRoute.Setting> {
             SettingScreen()
         }
-        composable(
-            route = "detail/{id}",
-            arguments = listOf(navArgument("id") { type = NavType.StringType })
-        ) {
-            val id = it.arguments?.getString("id")!!
-            DetailScreen(id)
+        composable<AppRoute.Detail> {
+            val detail = it.toRoute<AppRoute.Detail>()
+            DetailScreen(detail.id)
         }
-        composable(
-            route = "main/{id}",
-            arguments = listOf(navArgument("id") { type = NavType.StringType })
-        ) {
-            val id = it.arguments?.getString("id")!!
-            MainContentScreen(id)
+        composable<AppRoute.MainContent> {
+            val mainContent = it.toRoute<AppRoute.MainContent>()
+            MainContentScreen(mainContent.id)
         }
-        composable(
-            route = "sub/{id}",
-            arguments = listOf(navArgument("id") { type = NavType.StringType })
-        ) {
-            val id = it.arguments?.getString("id")!!
-            SubContentScreen(id)
+        composable<AppRoute.SubContent> {
+            val subContent = it.toRoute<AppRoute.SubContent>()
+            SubContentScreen(subContent.id)
         }
     }
 }
 
-
-/**
- * Route string constants
- */
-private const val HOME_ROUTE = "home"
-private const val LIST_ROUTE = "list"
-private const val SETTING_ROUTE = "setting"
-
-/**
- * Extension property to get route name for navigation
- */
-private val AppRoute.routeName: String
-    get() = when (this) {
-        is AppRoute.Home -> HOME_ROUTE
-        is AppRoute.List -> LIST_ROUTE
-        is AppRoute.Setting -> SETTING_ROUTE
-        is AppRoute.Detail -> "detail/${id}"
-        is AppRoute.MainContent -> "main/${id}"
-        is AppRoute.SubContent -> "sub/${id}"
-    }
 
 /**
  * Data class for top-level route UI information
@@ -173,7 +143,4 @@ private data class TopLevelRoute(
     val route: AppRoute,
     val label: String,
     val icon: ImageVector
-) {
-    val routeName: String
-        get() = route.routeName
-}
+)
