@@ -37,9 +37,6 @@ android {
 dependencies {
     implementation(project(":core:route"))
     implementation(project(":core:ui"))
-    implementation(project(":feature:detail"))
-    implementation(project(":feature:maincontent"))
-    implementation(project(":feature:subcontent"))
 
     implementation(libs.androidx.core.ktx)
     implementation(platform(libs.androidx.compose.bom))

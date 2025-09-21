@@ -40,6 +40,9 @@ dependencies {
     implementation(project(":feature:home"))
     implementation(project(":feature:list"))
     implementation(project(":feature:setting"))
+    implementation(project(":feature:detail"))
+    implementation(project(":feature:maincontent"))
+    implementation(project(":feature:subcontent"))
 
     implementation(libs.androidx.core.ktx)
     implementation(platform(libs.androidx.compose.bom))

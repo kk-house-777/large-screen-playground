@@ -75,21 +75,11 @@ milestones:
           - "Run ./gradlew :feature:list:build :feature:detail:build :feature:maincontent:build :feature:subcontent:build"
         verify: "それぞれのモジュールでassembleDebugが成功すること"
 
-
-      - id: "wire-navigation-from-list"
-        goal: "List → Detail/Main と MainContent → SubContent の遷移を配線する"
-        module_scope: [":feature:list", ":feature:navigation"]
-        depends_on: ["entry-composables-in-feature-list"]
+      - id: "migrate-type-safe-navigation-compose"
+        goal: "NavigationComposeを型安全に使う"
+        module_scope: ["app", "core:route"]
         actions:
-          - "ListScreen で item クリック時に navController.navigate(AppRoute.Detail(item.id).routeName)"
-          - "（必要なら）別操作で navController.navigate(AppRoute.MainContent(item.id).routeName) も追加"
-          - "MainContentScreen に \"サブを開く\" ボタンなどを追加し、"
-          - "navController.navigate(AppRoute.SubContent(id).routeName) を呼び出す"
-          - "Run ./gradlew :app:assembleDebug"
-        verify:
-          - "Home → List → 任意アイテム → Detail に遷移できる"
-          - "MainContent 経由で SubContent に遷移できる"
-          - "ビルド成功（:app:assembleDebug）"
-        commit: "feat(list): wire navigation to detail/main/sub routes from list and main"
-        notes: "NavController の取得は LocalContext/LocalNavController 等プロジェクト慣習に合わせる"
-
+          - "kotlin-serializationの依存をプロジェクトに導入"
+          - "routeをシリアライザブルなデータクラスに置き換え"
+          - "既存のnavigation compose の画面遷移の仕組みを,type-safe な形に変更"
+        verify: "appがassembleDebugに成功すること"

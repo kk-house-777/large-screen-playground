@@ -25,10 +25,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import example.large.screen.playground.core.route.AppRoute
 import example.large.screen.playground.feature.home.HomeScreen
-import example.large.screen.playground.feature.list.DetailRoute
+import example.large.screen.playground.feature.detail.DetailRoute
 import example.large.screen.playground.feature.list.ListDetailScreen
-import example.large.screen.playground.feature.list.MainContentRoute
-import example.large.screen.playground.feature.list.SubContentRoute
+import example.large.screen.playground.feature.maincontent.MainContentRoute
+import example.large.screen.playground.feature.subcontent.SubContentRoute
 import example.large.screen.playground.feature.setting.SettingScreen
 
 /**
