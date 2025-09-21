@@ -112,7 +112,7 @@ private fun AppNavHost(
         modifier = modifier
     ) {
         composable<AppRoute.Home> {
-            HomeScreen()
+            HomeScreen(navController)
         }
         composable<AppRoute.List> {
             ListScreen(navController)
@@ -122,7 +122,7 @@ private fun AppNavHost(
         }
         composable<AppRoute.Detail> {
             val detail = it.toRoute<AppRoute.Detail>()
-            DetailScreen(detail.id)
+            DetailScreen(detail.id, navController)
         }
         composable<AppRoute.MainContent> {
             val mainContent = it.toRoute<AppRoute.MainContent>()
