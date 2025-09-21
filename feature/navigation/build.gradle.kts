@@ -38,6 +38,7 @@ dependencies {
     implementation(project(":core:route"))
     implementation(project(":core:ui"))
     implementation(project(":feature:home"))
+    implementation(project(":feature:list"))
     implementation(project(":feature:setting"))
 
     implementation(libs.androidx.core.ktx)

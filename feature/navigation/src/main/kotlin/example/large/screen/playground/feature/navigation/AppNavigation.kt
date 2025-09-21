@@ -22,6 +22,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import example.large.screen.playground.core.route.AppRoute
 import example.large.screen.playground.feature.home.HomeScreen
+import example.large.screen.playground.feature.list.ListDetailScreen
 import example.large.screen.playground.feature.setting.SettingScreen
 
 /**
@@ -108,7 +109,7 @@ private fun AppNavHost(
             HomeScreen()
         }
         composable(LIST_ROUTE) {
-            ListPlaceholderScreen()
+            ListDetailScreen()
         }
         composable(SETTING_ROUTE) {
             SettingScreen()
@@ -116,13 +117,6 @@ private fun AppNavHost(
     }
 }
 
-/**
- * Placeholder screen for List
- */
-@Composable
-private fun ListPlaceholderScreen() {
-    Text("List Screen - Placeholder")
-}
 
 /**
  * Route string constants
