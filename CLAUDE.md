@@ -76,20 +76,45 @@ Currently only `:app` module exists with basic MainActivity setup. Other modules
 ## Development Workflow
 
 ### AI Agent Workflow (YAML-Driven)
-This project uses a structured AI agent workflow defined in `.agent/workflows/adaptive-android-v1.yaml`:
+This project uses a structured AI agent workflow defined in `.agent/workflows/` directory:
 
-**Core Principles:**
-- Each task must compile (`./gradlew :app:assembleDebug` must succeed)
-- One commit per task (no fixup commits)
-- Keep adaptive layout usage behind `:core:ui` wrappers
+**Core Principles (FROM YAML - MUST FOLLOW):**
+- One commit per task
+- Respect depends_on strictly
+- Changes must stay within module_scope
+- Verify each task with the provided verify steps
+- **CREATE PR WITH THE PROVIDED COMMIT MESSAGE** (Required for EVERY milestone)
 
 **Task Execution Pattern:**
 1. Select next task (incomplete, dependencies resolved, priority order)
-2. Create feature branch: `feat/<milestone>/<task-id>`
+2. Create feature branch: `feat/<milestone>` or `feat/<task-id>`
 3. Execute YAML actions sequentially
-4. Verify with `./gradlew :app:assembleDebug`
-5. Commit with exact message from YAML
-6. Open PR using template in `.github/PULL_REQUEST_TEMPLATE.md`
+4. Verify with `./gradlew :app:assembleDebug` or specified verify command
+5. Commit with exact message from YAML (one commit per task)
+6. **IMPORTANT: Create PR after completing milestone tasks** - Do not commit directly to main
+7. Use `gh pr create` with detailed description of changes
+
+### Pull Request Guidelines
+**IMPORTANT**: Always create a PR for milestone completion. Never commit directly to main when following YAML workflows.
+
+**PR Creation Process:**
+```bash
+# 1. Create feature branch
+git checkout -b feat/<milestone-name>
+
+# 2. Complete all tasks in the milestone
+# 3. Push branch
+git push -u origin feat/<milestone-name>
+
+# 4. Create PR with gh CLI
+gh pr create --base main --title "feat: <milestone title>" --body "<detailed description>"
+```
+
+**PR Description Should Include:**
+- Summary of changes
+- List of completed tasks from YAML
+- Test plan with checkboxes
+- Behavior changes for different screen sizes
 
 ### Key Implementation Notes
 - **Adaptive Dependencies**: Material3 adaptive, adaptive-layout, adaptive-navigation libraries
