@@ -11,20 +11,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import example.large.screen.playground.core.config.Config
+import example.large.screen.playground.core.config.LocalAdaptiveConfig
 
 @Composable
 fun SettingScreen() {
-    var useAdaptiveLayouts by remember { mutableStateOf(Config.useAdaptiveLayouts) }
-    var enableListDetailLayout by remember { mutableStateOf(Config.enableListDetailLayout) }
-    var enableSupportingPaneLayout by remember { mutableStateOf(Config.enableSupportingPaneLayout) }
+    val adaptiveConfig = LocalAdaptiveConfig.current
 
     Column(
         modifier = Modifier
@@ -52,31 +46,10 @@ fun SettingScreen() {
 
                 SettingToggle(
                     title = "Use Adaptive Layouts",
-                    description = "Enable adaptive layout components",
-                    checked = useAdaptiveLayouts,
-                    onCheckedChange = {
-                        useAdaptiveLayouts = it
-                        Config.setAdaptiveLayouts(it)
-                    }
-                )
-
-                SettingToggle(
-                    title = "List-Detail Layout",
-                    description = "Enable list-detail adaptive layout",
-                    checked = enableListDetailLayout,
-                    onCheckedChange = {
-                        enableListDetailLayout = it
-                        Config.setListDetailLayout(it)
-                    }
-                )
-
-                SettingToggle(
-                    title = "Supporting Pane Layout",
-                    description = "Enable supporting pane adaptive layout",
-                    checked = enableSupportingPaneLayout,
-                    onCheckedChange = {
-                        enableSupportingPaneLayout = it
-                        Config.setSupportingPaneLayout(it)
+                    description = "Enable adaptive layout components throughout the app",
+                    checked = adaptiveConfig.useAdaptiveLayouts.value,
+                    onCheckedChange = { enabled ->
+                        adaptiveConfig.useAdaptiveLayouts.value = enabled
                     }
                 )
             }
