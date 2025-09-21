@@ -25,7 +25,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import example.large.screen.playground.core.route.AppRoute
 import example.large.screen.playground.feature.home.HomeScreen
+import example.large.screen.playground.feature.list.DetailRoute
 import example.large.screen.playground.feature.list.ListDetailScreen
+import example.large.screen.playground.feature.list.MainContentRoute
+import example.large.screen.playground.feature.list.SubContentRoute
 import example.large.screen.playground.feature.setting.SettingScreen
 
 /**
@@ -142,24 +145,6 @@ private fun AppNavHost(
     }
 }
 
-
-/**
- * Temporary placeholder route functions - will be replaced in next task
- */
-@Composable
-private fun DetailRoute(id: String) {
-    Text("Detail Route: $id")
-}
-
-@Composable
-private fun MainContentRoute(id: String) {
-    Text("Main Content Route: $id")
-}
-
-@Composable
-private fun SubContentRoute(id: String) {
-    Text("Sub Content Route: $id")
-}
 
 /**
  * Route string constants
