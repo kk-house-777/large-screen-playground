@@ -24,12 +24,15 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import example.large.screen.playground.core.route.AppRoute
-import example.large.screen.playground.feature.home.HomeScreen
 import example.large.screen.playground.feature.detail.DetailRoute
-import example.large.screen.playground.feature.list.ListDetailScreen
+import example.large.screen.playground.feature.detail.DetailScreen
+import example.large.screen.playground.feature.home.HomeScreen
+import example.large.screen.playground.feature.list.ListScreen
 import example.large.screen.playground.feature.maincontent.MainContentRoute
-import example.large.screen.playground.feature.subcontent.SubContentRoute
+import example.large.screen.playground.feature.maincontent.MainContentScreen
 import example.large.screen.playground.feature.setting.SettingScreen
+import example.large.screen.playground.feature.subcontent.SubContentRoute
+import example.large.screen.playground.feature.subcontent.SubContentScreen
 
 /**
  * Top-level navigation composable with bottom navigation
@@ -116,7 +119,7 @@ private fun AppNavHost(
             HomeScreen()
         }
         composable(LIST_ROUTE) {
-            ListDetailScreen()
+            ListScreen()
         }
         composable(SETTING_ROUTE) {
             SettingScreen()
@@ -126,21 +129,21 @@ private fun AppNavHost(
             arguments = listOf(navArgument("id") { type = NavType.StringType })
         ) {
             val id = it.arguments?.getString("id")!!
-            DetailRoute(id)
+            DetailScreen(id)
         }
         composable(
             route = "main/{id}",
             arguments = listOf(navArgument("id") { type = NavType.StringType })
         ) {
             val id = it.arguments?.getString("id")!!
-            MainContentRoute(id)
+            MainContentScreen(id)
         }
         composable(
             route = "sub/{id}",
             arguments = listOf(navArgument("id") { type = NavType.StringType })
         ) {
             val id = it.arguments?.getString("id")!!
-            SubContentRoute(id)
+            SubContentScreen(id)
         }
     }
 }

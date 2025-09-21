@@ -80,6 +80,6 @@ milestones:
         module_scope: ["app", "core:route"]
         actions:
           - "kotlin-serializationの依存をプロジェクトに導入"
-          - "routeをシリアライザブルなデータクラスに置き換え"
-          - "既存のnavigation compose の画面遷移の仕組みを,type-safe な形に変更"
+          - "各画面を表現したrouteをシリアライザブルなデータクラスに置き換え。core:routeのみに配置"
+          - "既存のnavigation compose の画面遷移の仕組みを,type-safe な形に変更。NavHostの中身の宣言を変更する形になるはず"
         verify: "appがassembleDebugに成功すること"
