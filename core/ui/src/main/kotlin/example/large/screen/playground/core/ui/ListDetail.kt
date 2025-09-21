@@ -79,6 +79,7 @@ fun DetailPaneContent(
 fun MainPaneContent(
     itemId: String,
     onOpenSub: (String) -> Unit,
+    showSubButton: Boolean = true
 ) {
     Column(
         modifier = Modifier
@@ -101,18 +102,22 @@ fun MainPaneContent(
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(top = 8.dp, bottom = 24.dp)
         )
-        Button(
-            onClick = { onOpenSub(itemId) },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Navigate to Sub Content")
+
+        if (showSubButton) {
+            Button(
+                onClick = { onOpenSub(itemId) },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Navigate to Sub Content")
+            }
         }
     }
 }
 
 @Composable
 fun SubPaneContent(
-    parentId: String
+    parentId: String,
+    onClose: (() -> Unit)? = null
 ) {
     Column(
         modifier = Modifier
@@ -133,7 +138,16 @@ fun SubPaneContent(
         Text(
             text = "This is the third-level sub content screen, accessible from MainContent.",
             style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.padding(top = 8.dp)
+            modifier = Modifier.padding(top = 8.dp, bottom = 24.dp)
         )
+
+        onClose?.let { closeAction ->
+            Button(
+                onClick = closeAction,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Close Sub Content")
+            }
+        }
     }
 }
