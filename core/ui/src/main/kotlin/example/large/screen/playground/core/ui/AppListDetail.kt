@@ -2,6 +2,7 @@ package example.large.screen.playground.core.ui
 
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffold
+import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,9 +16,9 @@ import androidx.compose.ui.Modifier
 fun <T> AppListDetail(
     listPane: @Composable () -> Unit,
     detailPane: @Composable () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigator: ThreePaneScaffoldNavigator<T>  = rememberListDetailPaneScaffoldNavigator<T>()
 ) {
-    val navigator = rememberListDetailPaneScaffoldNavigator<T>()
 
     ListDetailPaneScaffold(
         directive = navigator.scaffoldDirective,
