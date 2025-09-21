@@ -74,3 +74,66 @@ fun DetailPaneContent(
         }
     }
 }
+
+@Composable
+fun MainPaneContent(
+    itemId: String,
+    onOpenSub: (String) -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = "Main Content",
+            style = MaterialTheme.typography.headlineMedium
+        )
+        Text(
+            text = "Content ID: $itemId",
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.padding(top = 8.dp)
+        )
+        Text(
+            text = "This is the main content view with detailed information and rich features",
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.padding(top = 8.dp, bottom = 24.dp)
+        )
+        Button(
+            onClick = { onOpenSub(itemId) },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Navigate to Sub Content")
+        }
+    }
+}
+
+@Composable
+fun SubPaneContent(
+    parentId: String
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = "Sub Content Screen",
+            style = MaterialTheme.typography.headlineMedium
+        )
+        Text(
+            text = "Parent ID: $parentId",
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.padding(top = 8.dp)
+        )
+        Text(
+            text = "This is the third-level sub content screen, accessible from MainContent.",
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.padding(top = 8.dp)
+        )
+    }
+}

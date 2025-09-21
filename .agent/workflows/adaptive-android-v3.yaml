@@ -42,6 +42,26 @@ milestone:
           actions:
             - "NavigationSuiteScaffoldを利用したサンプルを navigation-adaptiveモジュールに作成。NavHostはAppNavHostを使用"
             - "appモジュールにて、configのフラグを参照し、adaptive版とnot-adaptive版の切り替えを実装"
-          example: `.agent/examples/navigationSuiteScaffoldSample.md`
           verify:
               - "Module builds"
+  - name: "NavigableSupportingPaneScaffoldの実装"
+    description: "MainContentとSubContentでNavigableSupportingPaneScaffoldをつかったadaptive対応をする"
+    tasks:
+      - id: "refactor-main-sub"
+        goal: "MainContentScreenとSubContentScreenをStateLessのComposableに分離"
+        module_scope: [ "feature:maincontent" , "feature:subcontent" ]
+        actions:
+          - "DetailScreenとListScreenを例に、navControllerに依存しないComposableに分離。uiモジュールに分離すること"
+        verify:
+          - "Module builds"
+        commit: "feat(navigation-not-adaptive): add navigation module with navigation-base"
+      - id: "navigation-adaptive"
+        goal: "NavigableSupportingPaneScaffoldの実装"
+        module_scope: [ "navigation-base", "navigation-adaptive", "app", "config", "feature:maincontent", "feature:subcontent" , "feature:list"]
+        depends_on: [ "refactor-main-sub" ]
+        actions:
+          - "MainContentScreen.ktにComposableを追加して、NavigableSupportingPaneScaffoldをつかったMainContentとSubContentのレイアウトを実装"
+          - "AppNavHostをadaptiveConfig.useAdaptiveLayouts.valueに応じて,MainContentの呼び出しを切り替える。"
+        example: "feature:listのListDetailScreen, AppNavHostでのListDetailScreenの呼び出し
+        verify:
+          - "Module builds"
