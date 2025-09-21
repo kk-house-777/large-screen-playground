@@ -3,6 +3,7 @@ package example.large.screen.playground.feature.maincontent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -19,12 +20,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import example.large.screen.playground.core.route.AppRoute
 import example.large.screen.playground.core.ui.AppSupporting
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
-fun MainContentScreen(itemId: String) {
+fun MainContentScreen(itemId: String, navController: NavController) {
     var showSupporting by remember { mutableStateOf(false) }
     val navigator = rememberSupportingPaneScaffoldNavigator<Unit>()
     val coroutineScope = rememberCoroutineScope()
@@ -37,6 +40,9 @@ fun MainContentScreen(itemId: String) {
                 coroutineScope.launch {
                     navigator.navigateTo(SupportingPaneScaffoldRole.Supporting, Unit)
                 }
+            },
+            onNavigateToSubContent = {
+                navController.navigate(AppRoute.SubContent(itemId))
             }
         )
     }
@@ -61,10 +67,12 @@ fun MainContentScreen(itemId: String) {
     )
 }
 
+
 @Composable
 private fun MainContentPane(
     itemId: String,
-    onShowSupporting: () -> Unit
+    onShowSupporting: () -> Unit,
+    onNavigateToSubContent: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -88,9 +96,16 @@ private fun MainContentPane(
             modifier = Modifier.padding(top = 8.dp, bottom = 16.dp)
         )
         Button(
-            onClick = onShowSupporting
+            onClick = onShowSupporting,
+            modifier = Modifier.fillMaxWidth()
         ) {
             Text("Show Supporting Content")
+        }
+        Button(
+            onClick = onNavigateToSubContent,
+            modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
+        ) {
+            Text("Navigate to Sub Content")
         }
     }
 }

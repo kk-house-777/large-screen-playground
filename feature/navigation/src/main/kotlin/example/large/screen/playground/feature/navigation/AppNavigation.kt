@@ -126,7 +126,7 @@ private fun AppNavHost(
         }
         composable<AppRoute.MainContent> {
             val mainContent = it.toRoute<AppRoute.MainContent>()
-            MainContentScreen(mainContent.id)
+            MainContentScreen(mainContent.id, navController)
         }
         composable<AppRoute.SubContent> {
             val subContent = it.toRoute<AppRoute.SubContent>()

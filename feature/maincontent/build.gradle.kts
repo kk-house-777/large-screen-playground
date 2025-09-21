@@ -35,6 +35,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:route"))
+
     implementation(libs.androidx.core.ktx)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
@@ -43,6 +45,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material3.adaptive)
     implementation(libs.androidx.material3.adaptive.navigation)
+    implementation(libs.androidx.navigation.compose)
     implementation(project(":core:ui"))
 
     testImplementation(libs.junit)
