@@ -41,7 +41,8 @@ android {
 
 dependencies {
     implementation(project(":core:config"))
-    implementation(project(":feature:navigation"))
+    implementation(project(":core:route"))
+    implementation(project(":feature:navigation-base"))
     implementation(project(":feature:navigation-adaptive"))
     implementation(project(":feature:navigation-not-adaptive"))
 

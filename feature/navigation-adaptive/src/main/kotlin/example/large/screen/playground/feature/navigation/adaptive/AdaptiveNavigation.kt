@@ -1,24 +1,22 @@
 package example.large.screen.playground.feature.navigation.adaptive
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import example.large.screen.playground.core.route.AppRoute
 import example.large.screen.playground.feature.navigation.base.AppNavHost
+import example.large.screen.playground.feature.navigation.base.TopLevelRoute
 
 /**
  * Adaptive navigation implementation using NavigationSuiteScaffold
@@ -27,20 +25,35 @@ import example.large.screen.playground.feature.navigation.base.AppNavHost
  */
 @Composable
 fun AdaptiveNavigation(
+    topLevelRoutes: List<TopLevelRoute>,
     navController: NavHostController = rememberNavController()
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    val topLevelRoutes = listOf(
-        TopLevelRoute(AppRoute.Home, "Home", Icons.Filled.Home),
-        TopLevelRoute(AppRoute.List, "List", Icons.AutoMirrored.Filled.List),
-        TopLevelRoute(AppRoute.Setting, "Setting", Icons.Filled.Settings)
-    )
+    val adaptiveInfo = currentWindowAdaptiveInfo()
+    val isTopLevelRoute = topLevelRoutes.any { topRoute ->
+        currentDestination?.hierarchy?.any { it.route?.contains(topRoute.route::class.simpleName.orEmpty()) == true } == true
+    }
 
+    val customType = with(adaptiveInfo) {
+        if (isTopLevelRoute) {
+            NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(this)
+        } else {
+            NavigationSuiteType.None
+        }
+
+        // androidx.compose.material3.adaptive:adaptive version 1.2.0-beta and later
+//        if (windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND)) {
+//            NavigationSuiteType.NavigationDrawer
+//        } else {
+//            NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(adaptiveInfo)
+//        }
+    }
 
     Scaffold { innerPadding ->
         NavigationSuiteScaffold(
+            layoutType = customType,
             navigationSuiteItems = {
                 topLevelRoutes.forEach { topRoute ->
                     val selected = currentDestination?.hierarchy?.any {
@@ -82,12 +95,3 @@ fun AdaptiveNavigation(
         }
     }
 }
-
-/**
- * Data class for top-level route UI information
- */
-private data class TopLevelRoute(
-    val route: AppRoute,
-    val label: String,
-    val icon: ImageVector
-)

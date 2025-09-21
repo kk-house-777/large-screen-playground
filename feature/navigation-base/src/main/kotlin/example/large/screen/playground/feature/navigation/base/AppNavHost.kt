@@ -2,6 +2,7 @@ package example.large.screen.playground.feature.navigation.base
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -51,3 +52,12 @@ fun AppNavHost(
         }
     }
 }
+
+/**
+ * Data class for top-level route UI information
+ */
+data class TopLevelRoute(
+    val route: AppRoute,
+    val label: String,
+    val icon: ImageVector
+)
